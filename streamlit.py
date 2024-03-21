@@ -54,19 +54,17 @@ def get_k_chars(input, k, model, c):
 
 def main():
     text_input = st.text_input('Enter initial text :', '')
-    k = st.slider('Select a value for number of characters to be predicted:', min_value=0, max_value=50, value=8)
-    block_size = st.slider('Select a value for Block Size:', min_value=0, max_value=10, value=5)
+    k = st.slider('Select a value for number of characters to be predicted:', min_value=1, max_value=50, value=8)
+    block_size = st.slider('Select a value for Block Size:', min_value=1, max_value=7, value=5)
     embedding_size = st.slider('Select a value for Embedding Size:', min_value=2, max_value=6, value=4)
-    values_list = [5, 10, 15, 20, 25]
-    neurons = st.slider('Select a value for number of neurons:', 0, 4, 0, format_func=lambda i: values_list[i])
-    # [5, 10, 15, 20, 25] 
+    values_list = [5, 10, 15, 20]
+    neurons = st.slider('Select a value for number of neurons:', min_value=5, max_value=20, step = 5, value = 10)
 
     model = NextChar(block_size, len(stoi), embedding_size, neurons)
 
-    model.load_state_dict(torch.load('trained_models/{}_{}_{}'.format(block_size, embedding_size, neurons)))
-    result = get_k_chars(text_input, k, model, block_size)
-
     if st.button('Submit'):
+        model.load_state_dict(torch.load('trained_models/{}_{}_{}'.format(block_size, embedding_size, neurons)))
+        result = get_k_chars(text_input, k, model, block_size)
         st.write('The predicted next k characters are as follows: \n', result)
         # st.pyplot(plot_emb(model.emb, itos))
 
