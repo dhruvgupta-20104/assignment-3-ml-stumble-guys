@@ -66,7 +66,12 @@ def main():
         model.load_state_dict(torch.load('trained_models/{}_{}_{}'.format(block_size, embedding_size, neurons)))
         result = get_k_chars(text_input, k, model, block_size)
         st.write('The predicted next k characters are as follows: \n', result)
-        # st.pyplot(plot_emb(model.emb, itos))
+        fig, ax = plt.subplots(figsize=(10, 8))  # Create a new figure and axes
+        ax = plot_emb(model.emb, itos, ax)  # Call the plot_emb function
+        ax.set_title('Word Embeddings Visualization')  # Set the title of the plot
+
+        # Display the plot in Streamlit
+        st.pyplot(fig)
 
 if __name__ == '__main__':
     main()
